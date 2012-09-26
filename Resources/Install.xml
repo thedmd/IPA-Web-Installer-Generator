@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>       
+    <head>           
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />           
+        <title>[[BUNDLE-DISPLAY-NAME]]</title>        
+        <style type="text/css">
+            .icon
+            {
+            white-space:    nowrap;
+            text-align:     center;
+            vertical-align: top;
+            width: 72px;
+            }
+
+            .title
+            {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: verdana,geneva,sans-serif;
+            }
+
+            td.stamp_header
+            {
+            text-align: left;
+            vertical-align: top;
+            }
+
+            td.stamp_body
+            {
+            text-align: left;
+            vertical-align: top;
+            width: auto;
+            padding-left: 7px;
+            }
+
+            td.stamp_fill
+            {
+            }
+
+            div.stamp
+            {
+            }
+
+            .stamp
+            {
+            color: #909090;
+            font-size: 9px;
+            font-family: verdana,geneva,sans-serif;
+            }
+
+            .install_button
+            {
+            padding-left: 16px;
+            padding-right: 16px;
+            width: 120px;
+            height: 29px;
+            background: transparent url('[[BUTTON-URL]]') center center no-repeat;
+            text-decoration: none;
+            }
+
+            .install_text
+            {
+            padding-top: 6px;
+
+            vertical-align: middle;
+            text-align: center;
+
+            text-decoration: none;
+            text-shadow: 1px 1px #000000;
+            text-transform:uppercase;
+
+            font-family: verdana,geneva,sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            color: white;
+
+            }
+        </style>    
+    </head>       
+    <body style="background-color: #003447;">
+        <div style="text-align: center; vertical-align: top;">	
+            <div>		
+                <table align="center" border="0" cellpadding="0" cellspacing="0">			
+                    <tbody>				
+                        <tr>					
+                            <td rowspan="2" class="icon">
+                                <img alt="" src="[[ICON-SMALL-URL]]" style="width: 57px; height: 57px;" />
+                            </td>					
+                            <td colspan="2" style="text-align: left; vertical-align: top;">						
+                                <div>							
+                                    <span class="title">[[BUNDLE-DISPLAY-NAME]]</span>
+                                </div>
+                            </td>
+                            <td rowspan="2" >
+                                <a href="itms-services://?action=download-manifest&url=[[PLIST-URL]]" style="text-decoration: none">
+                                    <div class="install_button">
+                                        <div class="install_text">Install...</div>
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>				
+                        <tr>
+                            <td>
+                                <table align="left" border="0" cellpadding="0" cellspacing="0"><tbody>					
+                                    <tr><td class="stamp_header"><span class="stamp">Build date:   </span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>						
+                                    <tr><td class="stamp_header"><span class="stamp">Configuration:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
+
+                                    <tr><td class="stamp_header"><span class="stamp">Compatibility:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
+                                </tbody></table>
+                            </td>					
+                        </tr>
+                    </tbody>		
+                </table>	
+            </div>
+        </div>
+        <div>
+            <p></p>
+            <p>
+                <center><span class="stamp">
+                    Tap here to install <a href="http://ftp.artifexmundi.com/Departments/Deployment/Certificate/ArtifexMundiCA.crt">https server certificate</a>.<br />
+                    Renew <a href="https://developer.apple.com/ios/manage/provisioningprofiles/index.action">profisioning profile here</a>.
+                </span></center>  
+            </p>
+        </div>
+    </body>
+
+</html>
+
