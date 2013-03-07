@@ -198,12 +198,14 @@ namespace IPATools.Utilities
                             using (InflaterInputStream inflate = new InflaterInputStream(rawData, new Inflater(true)))
                             {
                                 inflate.IsStreamOwner = false;
-                                inflate.CopyTo(buffer);
+                                IPATools.Utilities.Utils.CopyStream(inflate, buffer);
+                                //inflate.CopyTo(buffer);
                             }
 
                             buffer.Position = 0;
                             rawData.SetLength(0);
-                            buffer.CopyTo(rawData);
+                            IPATools.Utilities.Utils.CopyStream(buffer, rawData);
+                            //buffer.CopyTo(rawData);
                         }
 
                         {
@@ -355,7 +357,8 @@ namespace IPATools.Utilities
 
             using (MemoryStream input = new MemoryStream())
             {
-                reader.CopyTo(input);
+                //reader.CopyTo(input);
+                IPATools.Utilities.Utils.CopyStream(reader, input);
                 input.Position = 0;
                 PNG_Chunk[] chunks = ReadChunks(input);
                 chunks = ProcessChunks(chunks);

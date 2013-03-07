@@ -47,7 +47,7 @@ namespace IPATools
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 using (Stream data = ipa.GetInputStream(infoPlistEntry))
-                    data.CopyTo(memoryStream);
+                    IPATools.Utilities.Utils.CopyStream(data, memoryStream);
 
                 memoryStream.Position = 0;
 
@@ -86,7 +86,7 @@ namespace IPATools
                 {
                     using (Stream zipStream = ipa.GetInputStream(iconEntry))
                     using (Stream pngStream = Decrunch.Process(zipStream))
-                        pngStream.CopyTo(buffer);
+                        IPATools.Utilities.Utils.CopyStream(pngStream, buffer);
 
                     buffer.Position = 0;
 
@@ -129,7 +129,7 @@ namespace IPATools
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     using (Stream data = ipa.GetInputStream(infoPlistStrings))
-                        data.CopyTo(memoryStream);
+                        IPATools.Utilities.Utils.CopyStream(data, memoryStream);
 
                     memoryStream.Position = 0;
 
@@ -148,7 +148,7 @@ namespace IPATools
                         else
                             throw new Exception("Failed to parse InfoPlist.strings as plain text.");
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         BinaryPlistReader reader = new BinaryPlistReader();
                         strings = reader.ReadObject(memoryStream);
