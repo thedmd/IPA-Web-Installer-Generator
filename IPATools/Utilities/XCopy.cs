@@ -5,8 +5,9 @@ using System.Text;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace IPA_Web_Installer_Generator.Utilities
+namespace IPATools.Utilities
 {
+#if WIN32
     /// <summary>
     /// PInvoke wrapper for CopyEx
     /// http://msdn.microsoft.com/en-us/library/windows/desktop/aa363852.aspx
@@ -134,4 +135,5 @@ namespace IPA_Web_Installer_Generator.Utilities
         #endregion
 
     }
+#endif
 }

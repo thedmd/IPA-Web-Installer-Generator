@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Runtime.InteropServices;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using System.IO.Compression;
-using ICSharpCode.SharpZipLib.Checksums;
 using System.Net;
-using System.Drawing;
-using System.Drawing.Imaging;
-using ICSharpCode.SharpZipLib.Core;
+using System.Runtime.InteropServices;
+using System.Text;
+using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-namespace IPA_Web_Installer_Generator.Utilities
+namespace IPATools.Utilities
 {
     public class Decrunch
     {
