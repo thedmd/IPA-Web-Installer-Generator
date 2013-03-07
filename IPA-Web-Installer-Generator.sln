@@ -8,6 +8,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPA-Web-Installer-Generator
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPATools", "IPATools\IPATools.csproj", "{AC7E0D5E-2900-4ECE-AC06-326BB744E8FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPAInstallerGenerator", "IPAInstallerGenerator\IPAInstallerGenerator.csproj", "{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AC7E0D5E-2900-4ECE-AC06-326BB744E8FD} = {AC7E0D5E-2900-4ECE-AC06-326BB744E8FD}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +43,16 @@ Global
 		{AC7E0D5E-2900-4ECE-AC06-326BB744E8FD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AC7E0D5E-2900-4ECE-AC06-326BB744E8FD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AC7E0D5E-2900-4ECE-AC06-326BB744E8FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Debug|x86.ActiveCfg = Debug|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Debug|x86.Build.0 = Debug|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Release|Any CPU.ActiveCfg = Release|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Release|x86.ActiveCfg = Release|x86
+		{BDC5D0DA-2CE3-4E1A-9024-B80F295ACB48}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

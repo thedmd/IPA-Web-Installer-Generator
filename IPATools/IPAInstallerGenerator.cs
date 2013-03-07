@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using IPATools.Properties;
-using System.ComponentModel;
-using IPATools.Utilities;
-using System.Runtime.Serialization.Plists;
 
 namespace IPATools
 {
@@ -30,26 +25,24 @@ namespace IPATools
             set { m_BaseUrl = value; }
         }
 
-        public bool Async
+        public CustomFileCopyHandler CustomFileCopy
         {
-            get;
-            set;
+            get { return m_CustomFileCopy; }
+            set { m_CustomFileCopy = value; }
         }
 
-        public event ProgressChangedEventHandler ProgressChanged;
-        public event RunWorkerCompletedEventHandler RunWorkerCompleted;
+        public delegate void CustomFileCopyHandler(string source, string destination);
 
         public IPAInstallerGenerator()
         {
-            Async = false;
         }
 
-        public IPAInstallerGenerator(IPAInfo info, string outputDir, string baseUrl)
+        public IPAInstallerGenerator(IPAInfo info, string outputDir, string baseUrl, CustomFileCopyHandler fileCopyHandler)
         {
-            Async = false;
             Info = info;
             OutputDir = outputDir;
             BaseUrl = baseUrl;
+            CustomFileCopy = fileCopyHandler;
         }
 
         public void Run()
@@ -138,61 +131,16 @@ namespace IPATools
 
         void CopyFile(string source, string destination)
         {
-#if WIN32
-            if (Async)
-            {
-                m_Worker = new BackgroundWorker();
-                m_Worker.WorkerReportsProgress = true;
-                m_Worker.WorkerSupportsCancellation = false;
-                m_Worker.DoWork += new DoWorkEventHandler(XCopy_DoWork);
-                m_Worker.ProgressChanged += new ProgressChangedEventHandler(XCopy_ProgressChanged);
-                m_Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(XCopy_RunWorkerCompleted);
-                m_Worker.RunWorkerAsync(new string[] { source, destination });
-            }
+            if (null != m_CustomFileCopy)
+                m_CustomFileCopy(source, destination);
             else
-#endif
-            {
-                XCopy_ProgressChanged(this, new ProgressChangedEventArgs(0, destination));
                 File.Copy(source, destination);
-                XCopy_ProgressChanged(this, new ProgressChangedEventArgs(100, destination));
-                XCopy_RunWorkerCompleted(this, new RunWorkerCompletedEventArgs(destination, null, false));
-            }
-        }
-
-#if WIN32
-        void XCopy_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-
-            string[] files = e.Argument as string[];
-
-            XCopy.Copy(files[0], files[1], true, true, (o, pce) =>
-            {
-                worker.ReportProgress(pce.ProgressPercentage, files[0]);
-            });
-
-            e.Result = files[1];
-        }
-#endif
-
-        void XCopy_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (null != ProgressChanged)
-                ProgressChanged(sender, e);
-        }
-
-        void XCopy_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            m_Running = false;
-
-            if (null != RunWorkerCompleted)
-                RunWorkerCompleted(sender, e);
         }
 
         private IPAInfo m_Info = null;
         private string m_OutputDir = string.Empty;
         private string m_BaseUrl = string.Empty;
         private bool m_Running = false;
-        private BackgroundWorker m_Worker = null;
+        private CustomFileCopyHandler m_CustomFileCopy = null;
     }
 }

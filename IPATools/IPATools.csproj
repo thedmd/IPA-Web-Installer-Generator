@@ -33,12 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -64,7 +60,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Utilities\Decrunch.cs" />
-    <Compile Include="Utilities\XCopy.cs" />
     <Compile Include="Zip\Checksums\Adler32.cs" />
     <Compile Include="Zip\Checksums\CRC32.cs" />
     <Compile Include="Zip\Checksums\IChecksum.cs" />

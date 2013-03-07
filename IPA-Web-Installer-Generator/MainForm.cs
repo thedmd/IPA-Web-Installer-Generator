@@ -15,7 +15,7 @@ namespace IPA_Web_Installer_Generator
     {
         private string Title = string.Empty;
         private IPAInfo Info = null;
-        private bool Working = false;
+        private BackgroundWorker Worker = null;
 
         public MainForm()
         {
@@ -96,7 +96,7 @@ namespace IPA_Web_Installer_Generator
             if (IPAIcon.Image == null)
                 IPAIcon.Image = Resources.Icon;
 
-            if (Working)
+            if (null != Worker)
                 enable = false;
 
             ControlInput(enable, true);
@@ -148,18 +148,41 @@ namespace IPA_Web_Installer_Generator
         {
             ControlInput(false, false);
 
-            Working = true;
+            Worker = new BackgroundWorker();
+            Worker.WorkerReportsProgress = true;
+            Worker.WorkerSupportsCancellation = false;
+            Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
+            Worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
+            Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            //Worker.RunWorkerAsync(new string[] { source, destination });
 
             GenerateProgressBar.Value = 0;
             GenerateProgressBar.Minimum = 0;
             GenerateProgressBar.Maximum = 100;
             GenerateProgressBar.Visible = true;
 
-            IPAInstallerGenerator generator = new IPAInstallerGenerator(info, outputDir, GetHostUrl());
-            generator.Async = true;
-            generator.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
-            generator.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            IPAInstallerGenerator generator = new IPAInstallerGenerator(info, outputDir, GetHostUrl(),
+                new IPAInstallerGenerator.CustomFileCopyHandler(Worker_Runner));
             generator.Run();
+        }
+
+        void Worker_Runner(string source, string destination)
+        {
+            Worker.RunWorkerAsync(new string[] { source, destination });
+        }
+
+        void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            string[] files = e.Argument as string[];
+
+            XCopy.Copy(files[0], files[1], true, true, (o, pce) =>
+            {
+                worker.ReportProgress(pce.ProgressPercentage, files[0]);
+            });
+
+            e.Result = files[1];
         }
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -180,7 +203,7 @@ namespace IPA_Web_Installer_Generator
         {
             GenerateProgressBar.Value = GenerateProgressBar.Maximum;
             GenerateProgressBar.Visible = false;
-            Working = false;
+            Worker = null;
             ControlInput(true, false);
 
             string path = Path.GetDirectoryName(Path.GetDirectoryName(e.Result as string));

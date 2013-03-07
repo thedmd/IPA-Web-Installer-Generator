@@ -8,6 +8,8 @@ using System.Runtime.Serialization.Plists;
 using ICSharpCode.SharpZipLib.Zip;
 using IPATools.Properties;
 using IPATools.Utilities;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace IPATools
 {
@@ -116,8 +118,11 @@ namespace IPATools
                 info.Icon72 = ResizeImage(bestIcon, new Size(72, 72));
             if (null == info.Icon512)
                 info.Icon512 = ResizeImage(bestIcon, new Size(512, 512));
-
             ZipEntry infoPlistStrings = FindZipEntry(ipa, Path.Combine(bundleRoot, "InfoPlist.strings"));
+            if (null == infoPlistStrings)
+                infoPlistStrings = FindZipEntry(ipa, "*/en.lproj/InfoPlist.strings");
+            if (null == infoPlistStrings)
+                infoPlistStrings = FindZipEntry(ipa, "*.lproj/InfoPlist.strings");
             if (null != infoPlistStrings)
             {
                 IDictionary strings = null;
@@ -128,8 +133,26 @@ namespace IPATools
 
                     memoryStream.Position = 0;
 
-                    BinaryPlistReader reader = new BinaryPlistReader();
-                    strings = reader.ReadObject(memoryStream);
+                    try
+                    {
+                        UTF8Encoding encoder = new UTF8Encoding(false, true);
+                        string entry = encoder.GetString(memoryStream.GetBuffer());
+                        var match = Regex.Match(entry, @"CFBundleDisplayName\s*=\s*""([^""\\]*(?:\\.[^""\\]*)*)""");
+
+                        if (match.Success)
+                        {
+                            Dictionary<string, string> result = new Dictionary<string, string>();
+                            result.Add("CFBundleDisplayName", match.Groups[1].Value);
+                            strings = result;
+                        }
+                        else
+                            throw new Exception("Failed to parse InfoPlist.strings as plain text.");
+                    }
+                    catch (Exception ex)
+                    {
+                        BinaryPlistReader reader = new BinaryPlistReader();
+                        strings = reader.ReadObject(memoryStream);
+                    }
                 }
 
                 string displayName = GetDictionaryEntry(strings, "CFBundleDisplayName");
@@ -142,13 +165,19 @@ namespace IPATools
 
         static ZipEntry FindZipEntry(ZipFile file, string name)
         {
+            bool tail = name.StartsWith("*");
+
             name = name.Replace('\\', '/');
+            if (tail)
+                name = name.Substring(1);
 
             foreach (ZipEntry entry in file)
             {
                 string entryName = entry.Name.Replace('\\', '/');
 
-                if (entryName.Equals(name))
+                if (tail && entryName.EndsWith(name))
+                    return entry;
+                else if (!tail && entryName.Equals(name))
                     return entry;
             }
 
