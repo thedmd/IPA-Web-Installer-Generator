@@ -25,6 +25,7 @@ namespace IPATools
         public DateTime BuildDate = DateTime.MinValue;
         public Image Icon57 = null;
         public Image Icon72 = null;
+        public Image Icon256 = null;
         public Image Icon512 = null;
         public Image RawIcon = null;
     }

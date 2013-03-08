@@ -79,6 +79,7 @@ namespace IPATools
 
             string icon57Path = Path.Combine(contentDirName, "Icon-57.png");
             string icon72Path = Path.Combine(contentDirName, "Icon-72.png");
+            string icon256Path = Path.Combine(contentDirName, "Icon-256.png");
             string icon512Path = Path.Combine(contentDirName, "Icon-512.png");
             string installPath = "Install.html";
             string buttonPath = Path.Combine(contentDirName, "button.png");
@@ -92,13 +93,15 @@ namespace IPATools
             dictionary.Add("[[BUILD-DATE]]", m_Info.BuildDate.ToString());
             dictionary.Add("[[ICON-SMALL-URL]]", GetAbsoluteUrl(icon57Path));
             dictionary.Add("[[ICON-URL]]", GetAbsoluteUrl(icon72Path));
-            dictionary.Add("[[ICON-LARGE-URL]]", GetAbsoluteUrl(icon512Path));
+            dictionary.Add("[[ICON-LARGE-URL]]", GetAbsoluteUrl(icon256Path));
+            dictionary.Add("[[ICON-XLARGE-URL]]", GetAbsoluteUrl(icon512Path));
             dictionary.Add("[[IPA-URL]]", GetAbsoluteUrl(ipaPath));
             dictionary.Add("[[PLIST-URL]]", GetAbsoluteUrl(infoPath));
             dictionary.Add("[[BUTTON-URL]]", GetAbsoluteUrl(buttonPath));
 
             m_Info.Icon57.Save(Path.Combine(m_OutputDir, icon57Path));
             m_Info.Icon72.Save(Path.Combine(m_OutputDir, icon72Path));
+            m_Info.Icon256.Save(Path.Combine(m_OutputDir, icon256Path));
             m_Info.Icon512.Save(Path.Combine(m_OutputDir, icon512Path));
 
             Resources.Button.Save(Path.Combine(m_OutputDir, buttonPath));
@@ -121,7 +124,7 @@ namespace IPATools
             // [[IPA-URL]] [[ICON-URL]] [[ICON-LARGE-URL]] [[BUNDLE-ID]] [[BUNDLE-VERSION]] [[BUNDLE-DISPLAY-NAME]] [[BUILD-PLATFORM]] [[BUILD-DATE]]
 
             // Install Keys:
-            // [[BUNDLE-DISPLAY-NAME]] [[ICON-SMALL-URL]] [[PLIST-URL]] [[BUTTON-URL]]
+            // [[BUNDLE-DISPLAY-NAME]] [[ICON-LARGE-URL]] [[PLIST-URL]] [[BUTTON-URL]]
         }
 
         private string GetAbsoluteUrl(string path)

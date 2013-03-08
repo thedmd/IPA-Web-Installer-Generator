@@ -19,7 +19,7 @@
 						<key>needs-shine</key>
 						<false/>
 						<key>url</key>
-						<string>[[ICON-URL]]</string>
+						<string>[[ICON-LARGE-URL]]</string>
 					</dict>
 					<dict>
 						<key>kind</key>
@@ -27,7 +27,7 @@
 						<key>needs-shine</key>
 						<false/>
 						<key>url</key>
-						<string>[[ICON-LARGE-URL]]</string>
+						<string>[[ICON-XLARGE-URL]]</string>
 					</dict>
 				</array>
 				<key>metadata</key>

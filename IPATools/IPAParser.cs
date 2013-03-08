@@ -100,6 +100,8 @@ namespace IPATools
                     info.Icon57 = icon;
                 if (icon.Width == 72 && icon.Height == 72)
                     info.Icon72 = icon;
+                if (icon.Width == 256 && icon.Height == 256)
+                    info.Icon256 = icon;
                 if (icon.Width == 512 && icon.Height == 512)
                     info.Icon512 = icon;
 
@@ -116,6 +118,8 @@ namespace IPATools
                 info.Icon57 = ResizeImage(bestIcon, new Size(57, 57));
             if (null == info.Icon72)
                 info.Icon72 = ResizeImage(bestIcon, new Size(72, 72));
+            if (null == info.Icon256)
+                info.Icon256 = ResizeImage(bestIcon, new Size(256, 256));
             if (null == info.Icon512)
                 info.Icon512 = ResizeImage(bestIcon, new Size(512, 512));
 
