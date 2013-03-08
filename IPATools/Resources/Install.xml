@@ -112,7 +112,7 @@
                     <tbody>
                         <tr>
                             <td rowspan="2" class="icon">
-                                <img alt="" src="[[ICON-SMALL-URL]]" style="width: 72px; height: 72px;" />
+                                <img alt="" src="[[ICON-URL]]" style="width: 72px; height: 72px;" />
                             </td>
                             <td colspan="2" class="title" style="text-align: left; vertical-align: top;">
                                 <div>
