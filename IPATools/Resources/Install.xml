@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>       
-    <head>           
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />           
-        <title>[[BUNDLE-DISPLAY-NAME]]</title>        
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>[[BUNDLE-DISPLAY-NAME]]</title>
         <style type="text/css">
             .icon
             {
@@ -75,19 +75,19 @@
             color: white;
 
             }
-        </style>    
-    </head>       
+        </style>
+    </head>
     <body style="background-color: #003447;">
-        <div style="text-align: center; vertical-align: top;">	
-            <div>		
-                <table align="center" border="0" cellpadding="0" cellspacing="0">			
-                    <tbody>				
-                        <tr>					
+        <div style="text-align: center; vertical-align: top;">
+            <div>
+                <table align="center" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
                             <td rowspan="2" class="icon">
                                 <img alt="" src="[[ICON-SMALL-URL]]" style="width: 57px; height: 57px;" />
-                            </td>					
-                            <td colspan="2" style="text-align: left; vertical-align: top;">						
-                                <div>							
+                            </td>
+                            <td colspan="2" style="text-align: left; vertical-align: top;">
+                                <div>
                                     <span class="title">[[BUNDLE-DISPLAY-NAME]]</span>
                                 </div>
                             </td>
@@ -98,19 +98,19 @@
                                     </div>
                                 </a>
                             </td>
-                        </tr>				
+                        </tr>
                         <tr>
                             <td>
-                                <table align="left" border="0" cellpadding="0" cellspacing="0"><tbody>					
-                                    <tr><td class="stamp_header"><span class="stamp">Build date:   </span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>						
+                                <table align="left" border="0" cellpadding="0" cellspacing="0"><tbody>
+                                    <tr><td class="stamp_header"><span class="stamp">Build date:   </span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
                                     <tr><td class="stamp_header"><span class="stamp">Configuration:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
 
                                     <tr><td class="stamp_header"><span class="stamp">Compatibility:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
                                 </tbody></table>
-                            </td>					
+                            </td>
                         </tr>
-                    </tbody>		
-                </table>	
+                    </tbody>
+                </table>
             </div>
         </div>
         <div>
@@ -119,10 +119,9 @@
                 <center><span class="stamp">
                     Tap here to install <a href="http://ftp.artifexmundi.com/Departments/Deployment/Certificate/ArtifexMundiCA.crt">https server certificate</a>.<br />
                     Renew <a href="https://developer.apple.com/ios/manage/provisioningprofiles/index.action">profisioning profile here</a>.
-                </span></center>  
+                </span></center>
             </p>
         </div>
     </body>
 
 </html>
-
