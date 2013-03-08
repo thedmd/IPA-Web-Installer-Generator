@@ -151,7 +151,7 @@
                                         </tr>
                                         <tr>
                                             <td class="stamp_header">
-                                                <span class="stamp">Build data:</span>
+                                                <span class="stamp">Build date:</span>
                                             </td>
                                             <td class="stamp_body">
                                                 <span class="stamp_value">[[BUILD-DATE]]</span>
