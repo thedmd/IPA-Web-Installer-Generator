@@ -118,6 +118,7 @@ namespace IPATools
                 info.Icon72 = ResizeImage(bestIcon, new Size(72, 72));
             if (null == info.Icon512)
                 info.Icon512 = ResizeImage(bestIcon, new Size(512, 512));
+
             ZipEntry infoPlistStrings = FindZipEntry(ipa, Path.Combine(bundleRoot, "InfoPlist.strings"));
             if (null == infoPlistStrings)
                 infoPlistStrings = FindZipEntry(ipa, "*/en.lproj/InfoPlist.strings");

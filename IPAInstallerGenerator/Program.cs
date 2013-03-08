@@ -52,7 +52,7 @@ namespace IPAInstallerGenerator
                                 throw new ArgumentException(string.Format("unrecognized argument \"{0}\".", param));
                         }
                     }
-                    catch (IndexOutOfRangeException e)
+                    catch (IndexOutOfRangeException)
                     {
                         throw new ArgumentException(string.Format("missing value for \"{0}\" argument.", arg));
                     }
