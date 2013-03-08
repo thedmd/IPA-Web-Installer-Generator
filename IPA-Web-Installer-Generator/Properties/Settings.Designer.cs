@@ -47,7 +47,6 @@ namespace IPA_Web_Installer_Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string IPAPath {
             get {
                 return ((string)(this["IPAPath"]));
@@ -59,7 +58,6 @@ namespace IPA_Web_Installer_Generator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DedicatedBuildDir {
             get {
                 return ((bool)(this["DedicatedBuildDir"]));

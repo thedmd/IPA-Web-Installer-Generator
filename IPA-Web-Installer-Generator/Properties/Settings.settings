@@ -8,10 +8,10 @@
     <Setting Name="BuildDir" GenerateDefaultValueInCode="false" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="IPAPath" Type="System.String" Scope="User">
+    <Setting Name="IPAPath" GenerateDefaultValueInCode="false" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DedicatedBuildDir" Type="System.Boolean" Scope="User">
+    <Setting Name="DedicatedBuildDir" GenerateDefaultValueInCode="false" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
