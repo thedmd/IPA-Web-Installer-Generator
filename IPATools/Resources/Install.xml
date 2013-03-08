@@ -9,29 +9,29 @@
             white-space:    nowrap;
             text-align:     center;
             vertical-align: middle;
-            width: 87px;
+            width: 174px;
             }
 
             .title
             {
             color: #FFFFFF;
-            font-size: 12pt;
+            font-size: 24pt;
             font-weight: bold;
             font-family: calibri,verdana,geneva,sans-serif;
-            text-shadow: 1px 1px 3px #000000;
+            text-shadow: 2px 2px 3px #000000;
 
             }
 
             td.title
             {
             border-bottom: 1px solid #C0C0C0;
-            padding: 2pt;
+            padding: 4pt;
             }
 
             td.info
             {
-            padding: 2pt;
-            padding-top: 5pt;
+            padding: 4pt;
+            padding-top: 10pt;
             }
 
             td.stamp_header
@@ -59,42 +59,43 @@
             .stamp
             {
             color: #909090;
-            font-size: 9px;
+            font-size: 18px;
             font-family: verdana,geneva,sans-serif;
             }
 
             .stamp_value
             {
             color: #96AEB7;
-            font-size: 9px;
+            font-size: 18px;
             font-family: verdana,geneva,sans-serif;
             }
 
 
             .install_button
             {
-            padding-left: 16px;
-            padding-right: 16px;
-            width: 120px;
-            height: 29px;
+            padding-left: 32px;
+            padding-right: 32px;
+            width: 240px;
+            height: 58px;
             background: transparent url('[[BUTTON-URL]]') center center no-repeat;
+            background-size:240px 58px;
             text-decoration: none;
             }
 
             .install_text
             {
-            padding-top: 5px;
+            padding-top: 10px;
 
             vertical-align: middle;
             text-align: center;
 
             text-decoration: none;
-            text-shadow: 1.5px 1.5px 5px #1F3118;
+            text-shadow: 3px 3px 10px #1F3118;
             text-transform:uppercase;
 
             font-family: verdana,geneva,sans-serif;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 28px;
             color: white;
 
             }
@@ -112,7 +113,7 @@
                     <tbody>
                         <tr>
                             <td rowspan="2" class="icon">
-                                <img alt="" src="[[ICON-LARGE-URL]]" style="width: 72px; height: 72px;" />
+                                <img alt="" src="[[ICON-LARGE-URL]]" style="width: 144px; height: 144px;" />
                             </td>
                             <td colspan="2" class="title" style="text-align: left; vertical-align: top;">
                                 <div>
