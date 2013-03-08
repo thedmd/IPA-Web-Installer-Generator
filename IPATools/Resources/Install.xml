@@ -8,15 +8,30 @@
             {
             white-space:    nowrap;
             text-align:     center;
-            vertical-align: top;
-            width: 72px;
+            vertical-align: middle;
+            width: 87px;
             }
 
             .title
             {
             color: #FFFFFF;
-            font-size: 16px;
-            font-family: verdana,geneva,sans-serif;
+            font-size: 12pt;
+            font-weight: bold;
+            font-family: calibri,verdana,geneva,sans-serif;
+            text-shadow: 1px 1px 3px #000000;
+
+            }
+
+            td.title
+            {
+            border-bottom: 1px solid #C0C0C0;
+            padding: 2pt;
+            }
+
+            td.info
+            {
+            padding: 2pt;
+            padding-top: 5pt;
             }
 
             td.stamp_header
@@ -48,6 +63,14 @@
             font-family: verdana,geneva,sans-serif;
             }
 
+            .stamp_value
+            {
+            color: #96AEB7;
+            font-size: 9px;
+            font-family: verdana,geneva,sans-serif;
+            }
+
+
             .install_button
             {
             padding-left: 16px;
@@ -60,21 +83,26 @@
 
             .install_text
             {
-            padding-top: 6px;
+            padding-top: 5px;
 
             vertical-align: middle;
             text-align: center;
 
             text-decoration: none;
-            text-shadow: 1px 1px #000000;
+            text-shadow: 1.5px 1.5px 5px #1F3118;
             text-transform:uppercase;
 
             font-family: verdana,geneva,sans-serif;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 14px;
             color: white;
 
             }
+
+            a:link {color:#C0C0C0;}
+            a:visited {color:#657D94;}
+            a:hover {color:#FFFFFF;}
+            a:active {color:#47ABCF;}
         </style>
     </head>
     <body style="background-color: #003447;">
@@ -84,29 +112,59 @@
                     <tbody>
                         <tr>
                             <td rowspan="2" class="icon">
-                                <img alt="" src="[[ICON-SMALL-URL]]" style="width: 57px; height: 57px;" />
+                                <img alt="" src="[[ICON-SMALL-URL]]" style="width: 72px; height: 72px;" />
                             </td>
-                            <td colspan="2" style="text-align: left; vertical-align: top;">
+                            <td colspan="2" class="title" style="text-align: left; vertical-align: top;">
                                 <div>
                                     <span class="title">[[BUNDLE-DISPLAY-NAME]]</span>
                                 </div>
                             </td>
-                            <td rowspan="2" >
-                                <a href="itms-services://?action=download-manifest&url=[[PLIST-URL]]" style="text-decoration: none">
-                                    <div class="install_button">
-                                        <div class="install_text">Install...</div>
-                                    </div>
-                                </a>
-                            </td>
                         </tr>
                         <tr>
-                            <td>
-                                <table align="left" border="0" cellpadding="0" cellspacing="0"><tbody>
-                                    <tr><td class="stamp_header"><span class="stamp">Build date:   </span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
-                                    <tr><td class="stamp_header"><span class="stamp">Configuration:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
-
-                                    <tr><td class="stamp_header"><span class="stamp">Compatibility:</span></td><td class="stamp_body"><span class="stamp">TBD</span></td></tr>
-                                </tbody></table>
+                            <td class="info">
+                                <table align="left" border="0" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Bundle id:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUNDLE-ID]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Version:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUNDLE-VERSION]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Platform:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUILD-PLATFORM]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Build data:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUILD-DATE]]</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td rowspan="1" >
+                                <a href="itms-services://?action=download-manifest&url=[[PLIST-URL]]" style="text-decoration: none">
+                                    <div class="install_button">
+                                        <div class="install_text">Install</div>
+                                    </div>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -116,12 +174,14 @@
         <div>
             <p></p>
             <p>
-                <center><span class="stamp">
-                    Tap here to install <a href="http://ftp.artifexmundi.com/Departments/Deployment/Certificate/ArtifexMundiCA.crt">https server certificate</a>.<br />
-                    Renew <a href="https://developer.apple.com/ios/manage/provisioningprofiles/index.action">profisioning profile here</a>.
-                </span></center>
+                <center>
+                    <span class="stamp">
+                        Tap here to install <a href="http://ftp.artifexmundi.com/Departments/Deployment/Certificate/ArtifexMundiCA.crt">https server certificate</a>.<br />
+                        Renew <a href="https://developer.apple.com/ios/manage/provisioningprofiles/index.action">profisioning profile here</a>.
+                    </span>
+                </center>
             </p>
         </div>
     </body>
-
 </html>
+

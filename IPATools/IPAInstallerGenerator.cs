@@ -88,6 +88,8 @@ namespace IPATools
             dictionary.Add("[[BUNDLE-DISPLAY-NAME]]", m_Info.BundleDisplayName);
             dictionary.Add("[[BUNDLE-ID]]", m_Info.BundleIdentifier);
             dictionary.Add("[[BUNDLE-VERSION]]", m_Info.BundleVersion);
+            dictionary.Add("[[BUILD-PLATFORM]]", m_Info.DeviceFamily.ToString());
+            dictionary.Add("[[BUILD-DATE]]", m_Info.BuildDate.ToString());
             dictionary.Add("[[ICON-SMALL-URL]]", GetAbsoluteUrl(icon57Path));
             dictionary.Add("[[ICON-URL]]", GetAbsoluteUrl(icon72Path));
             dictionary.Add("[[ICON-LARGE-URL]]", GetAbsoluteUrl(icon512Path));
@@ -116,7 +118,7 @@ namespace IPATools
             CopyFile(m_Info.BundlePath, Path.Combine(m_OutputDir, ipaPath));
 
             // IPA Keys:
-            // [[IPA-URL]] [[ICON-URL]] [[ICON-LARGE-URL]] [[BUNDLE-ID]] [[BUNDLE-VERSION]] [[BUNDLE-DISPLAY-NAME]]
+            // [[IPA-URL]] [[ICON-URL]] [[ICON-LARGE-URL]] [[BUNDLE-ID]] [[BUNDLE-VERSION]] [[BUNDLE-DISPLAY-NAME]] [[BUILD-PLATFORM]] [[BUILD-DATE]]
 
             // Install Keys:
             // [[BUNDLE-DISPLAY-NAME]] [[ICON-SMALL-URL]] [[PLIST-URL]] [[BUTTON-URL]]

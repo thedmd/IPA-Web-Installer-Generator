@@ -62,7 +62,7 @@ namespace IPAInstallerGenerator
             {
                 Console.WriteLine(TAG + ": " + e.Message);
                 Console.WriteLine("Try " + TAG + " --help for more information.");
-                return;
+                Environment.Exit(-1);
             }
 
             try
@@ -96,7 +96,7 @@ namespace IPAInstallerGenerator
             {
                 Console.WriteLine();
                 Console.WriteLine(TAG + ": " + e.Message);
-                return;
+                Environment.Exit(-1);
             }
         }
 
