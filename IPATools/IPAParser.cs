@@ -80,6 +80,8 @@ namespace IPATools
             foreach (string bundleIconFile in bundleInfo["CFBundleIconFiles"] as object[])
             {
                 ZipEntry iconEntry = FindZipEntry(ipa, Path.Combine(bundleRoot, bundleIconFile));
+                if (iconEntry == null)
+                    continue;
 
                 Image icon = null;
                 using (MemoryStream buffer = new MemoryStream())
