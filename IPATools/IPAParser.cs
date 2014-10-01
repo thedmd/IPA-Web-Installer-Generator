@@ -77,9 +77,36 @@ namespace IPATools
                 info.DeviceFamily = DeviceFamily.iPad;
 
             Image bestIcon = null;
-            foreach (string bundleIconFile in bundleInfo["CFBundleIconFiles"] as object[])
+
+            List<string> iconNames = new List<string>();
+
+            object[] bundleIconFiles = null;
+
+            // Find device specific icon bundle
+            IDictionary bundleIcons = null;
+            if (info.DeviceFamily == DeviceFamily.iPad)
+                bundleIcons = bundleInfo["CFBundleIcons~ipad"] as IDictionary;
+            else if (info.DeviceFamily == DeviceFamily.iPhone)
+                bundleIcons = bundleInfo["CFBundleIcons~iphone"] as IDictionary;
+            if (null == bundleIcons)
+                bundleIcons = bundleInfo["CFBundleIcons"] as IDictionary;
+            if (null != bundleIcons)
             {
-                ZipEntry iconEntry = FindZipEntry(ipa, Path.Combine(bundleRoot, bundleIconFile));
+                IDictionary primaryIcon = bundleIcons["CFBundlePrimaryIcon"] as IDictionary;
+                if (null != primaryIcon)
+                    bundleIconFiles = primaryIcon["CFBundleIconFiles"] as object[];
+            }
+
+            if (null == bundleIconFiles)
+                bundleIconFiles = bundleInfo["CFBundleIconFiles"] as object[];
+
+            if (null != bundleIconFiles)
+                foreach (string bundleIconFile in bundleIconFiles as object[])
+                    iconNames.Add(Path.Combine(bundleRoot, bundleIconFile));
+
+            foreach (string iconName in iconNames)
+            {
+                ZipEntry iconEntry = FindZipEntry(ipa, iconName);
                 if (iconEntry == null)
                     continue;
 
