@@ -75,14 +75,7 @@ namespace IPATools
 
             m_Running = true;
 
-            InfoList.Sort(CompareInfos);
-
             DoGenerate();
-        }
-
-        private int CompareInfos(IPAInfo left, IPAInfo right)
-        {
-            return left.BundleDisplayName.CompareTo(right.BundleDisplayName);
         }
 
         private void SplitTemplate(out string header, out string footer, out string row, out string rowSeparator)
