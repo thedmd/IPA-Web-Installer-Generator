@@ -6,50 +6,54 @@
         <style type="text/css">
             .icon
             {
-            white-space:    nowrap;
-            text-align:     center;
-            vertical-align: middle;
-            width: 174px;
+                white-space:    nowrap;
+                text-align:     center;
+                vertical-align: middle;
+                width: 174px;
             }
 
             .title
             {
-            color: #FFFFFF;
-            font-size: 24pt;
-            font-weight: bold;
-            font-family: calibri,verdana,geneva,sans-serif;
-            text-shadow: 2px 2px 3px #000000;
-
+                color: #FFFFFF;
+                font-size: 24pt;
+                font-weight: bold;
+                font-family: calibri,verdana,geneva,sans-serif;
+                text-shadow: 2px 2px 3px #000000;
             }
 
             td.title
             {
-            border-bottom: 1px solid #C0C0C0;
-            padding: 4pt;
+                border-bottom: 1px solid #C0C0C0;
+                padding: 4pt;
             }
 
             td.info
             {
-            padding: 4pt;
-            padding-top: 10pt;
+                padding: 4pt;
+                padding-top: 10pt;
             }
 
             td.stamp_header
             {
-            text-align: left;
-            vertical-align: top;
+                text-align: left;
+                vertical-align: top;
             }
 
             td.stamp_body
             {
-            text-align: left;
-            vertical-align: top;
-            width: auto;
-            padding-left: 7px;
+                text-align: left;
+                vertical-align: top;
+                width: auto;
+                padding-left: 7px;
             }
 
             td.stamp_fill
             {
+            }
+
+            td.separator
+            {
+                padding-top: 10px;
             }
 
             div.stamp
@@ -58,46 +62,44 @@
 
             .stamp
             {
-            color: #909090;
-            font-size: 18px;
-            font-family: verdana,geneva,sans-serif;
+                color: #909090;
+                font-size: 18px;
+                font-family: verdana,geneva,sans-serif;
             }
 
             .stamp_value
             {
-            color: #96AEB7;
-            font-size: 18px;
-            font-family: verdana,geneva,sans-serif;
+                color: #96AEB7;
+                font-size: 18px;
+                font-family: verdana,geneva,sans-serif;
             }
-
 
             .install_button
             {
-            padding-left: 32px;
-            padding-right: 32px;
-            width: 240px;
-            height: 58px;
-            background: transparent url('[[BUTTON-URL]]') center center no-repeat;
-            background-size:240px 58px;
-            text-decoration: none;
+                padding-left: 32px;
+                padding-right: 32px;
+                width: 240px;
+                height: 58px;
+                background: transparent url('[[BUTTON-URL]]') center center no-repeat;
+                background-size:240px 58px;
+                text-decoration: none;
             }
 
             .install_text
             {
-            padding-top: 10px;
+                padding-top: 10px;
 
-            vertical-align: middle;
-            text-align: center;
+                vertical-align: middle;
+                text-align: center;
 
-            text-decoration: none;
-            text-shadow: 3px 3px 10px #1F3118;
-            text-transform:uppercase;
+                text-decoration: none;
+                text-shadow: 3px 3px 10px #1F3118;
+                text-transform:uppercase;
 
-            font-family: verdana,geneva,sans-serif;
-            font-weight: bold;
-            font-size: 28px;
-            color: white;
-
+                font-family: verdana,geneva,sans-serif;
+                font-weight: bold;
+                font-size: 28px;
+                color: white;
             }
 
             a:link {color:#C0C0C0;}
@@ -111,6 +113,7 @@
             <div>
                 <table align="center" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
+                        <!-- ROW START -->
                         <tr>
                             <td rowspan="2" class="icon">
                                 <img alt="" src="[[ICON-LARGE-URL]]" style="width: 144px; height: 144px;" />
@@ -168,6 +171,14 @@
                                 </a>
                             </td>
                         </tr>
+                    <!-- ROW END -->
+                    <!-- ROW SEPARATOR START -->
+                        <tr>
+                            <td colspan="3" class="separator">
+                                <br />
+                            </td>
+                        </tr>
+                    <!-- ROW SEPARATOR END -->
                     </tbody>
                 </table>
             </div>

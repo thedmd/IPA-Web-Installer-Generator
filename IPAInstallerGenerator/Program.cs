@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using IPATools;
 using System.Globalization;
+using System.IO;
 
 namespace IPAInstallerGenerator
 {
@@ -12,10 +13,11 @@ namespace IPAInstallerGenerator
 
         static void Main(string[] args)
         {
-            string ipaPath = string.Empty;
+            List<string> ipaList = new List<string>();
             string outputDir = string.Empty;
             string baseUrl = string.Empty;
             bool infoOnly = false;
+            bool skipCopy = false;
 
             try
             {
@@ -27,12 +29,10 @@ namespace IPAInstallerGenerator
 
                 for (int i = 0; i < args.Length; ++i)
                 {
-                    string param = args[i];
+                    string arg = args[i];
 
-                    if (!param.StartsWith("/") && !param.StartsWith("-"))
-                        throw new ArgumentException(string.Format("invalid switch \"{0}\" in \"{1}\". Use '/' or '-' to begin an argument.", param.Substring(0, 1), param));
-
-                    string arg = param.Substring(1);
+                    if (arg.StartsWith("-"))
+                        arg = arg.Substring(1);
 
                     if (arg == "help")
                     {
@@ -44,12 +44,17 @@ namespace IPAInstallerGenerator
                     {
                         switch (arg)
                         {
-                            case "ipa": ipaPath = args[++i]; break;
+                            case "ipa": break;
                             case "outputDir": outputDir = args[++i]; break;
                             case "baseUrl": baseUrl = args[++i]; break;
                             case "info": infoOnly = true; break;
+                            case "skipCopy": skipCopy = true; break;
                             default:
-                                throw new ArgumentException(string.Format("unrecognized argument \"{0}\".", param));
+                                if (File.Exists(arg) && Path.GetExtension(arg).Equals(".ipa", StringComparison.InvariantCultureIgnoreCase))
+                                    ipaList.Add(arg);
+                                else
+                                    throw new ArgumentException(string.Format("unrecognized argument \"{0}\".", args[i]));
+                                break;
                         }
                     }
                     catch (IndexOutOfRangeException)
@@ -65,30 +70,42 @@ namespace IPAInstallerGenerator
                 Environment.Exit(-1);
             }
 
+
+            List<IPAInfo> infoList = new List<IPAInfo>();
+
             try
             {
-                Console.Write("Parsing IPA archive...");
-                IPAInfo info = IPAParser.Parse(ipaPath);
-                Console.WriteLine(" Done!");
-                Console.WriteLine();
-                Console.WriteLine("  Bundle details");
-                Console.WriteLine("    Display Name:          " + info.BundleDisplayName);
-                Console.WriteLine("    Name:                  " + info.BundleName);
-                Console.WriteLine("    ID:                    " + info.BundleIdentifier);
-                Console.WriteLine("    Version:               " + info.BundleVersion);
-                Console.WriteLine("    Date:                  " + info.BuildDate.ToString(CultureInfo.InvariantCulture));
-                Console.WriteLine();
-                Console.WriteLine("  Restrictions");
-                Console.WriteLine("    Platform:              " + info.PlatformName);
-                Console.WriteLine("    Minimum OS version:    " + info.MinimumOSVersion);
-                Console.WriteLine("    Device:                " + info.DeviceFamily.ToString());
+                foreach (var ipaPath in ipaList)
+                {
+                    Console.Write("Parsing IPA archive \"" + Path.GetFileName(ipaPath) + "\"...");
+                    IPAInfo info = IPAParser.Parse(ipaPath);
+
+                    Console.WriteLine(" Done!");
+                    Console.WriteLine();
+                    Console.WriteLine("  Bundle details");
+                    Console.WriteLine("    Display Name:          " + info.BundleDisplayName);
+                    Console.WriteLine("    Name:                  " + info.BundleName);
+                    Console.WriteLine("    ID:                    " + info.BundleIdentifier);
+                    Console.WriteLine("    Version:               " + info.BundleVersion);
+                    Console.WriteLine("    Date:                  " + info.BuildDate.ToString(CultureInfo.InvariantCulture));
+                    Console.WriteLine();
+                    Console.WriteLine("  Restrictions");
+                    Console.WriteLine("    Platform:              " + info.PlatformName);
+                    Console.WriteLine("    Minimum OS version:    " + info.MinimumOSVersion);
+                    Console.WriteLine("    Device:                " + info.DeviceFamily.ToString());
+                    Console.WriteLine();
+                    Console.WriteLine();
+
+                    infoList.Add(info);
+                }
 
                 if (infoOnly)
                     return;
 
                 Console.Write("Generating installer...");
                 IPATools.IPAInstallerGenerator generator = new IPATools.IPAInstallerGenerator(
-                    info, outputDir, baseUrl, null);
+                    infoList.ToArray(), outputDir, baseUrl, null);
+                generator.SkipCopying = skipCopy;
                 generator.Run();
                 Console.WriteLine(" Done!");
             }
