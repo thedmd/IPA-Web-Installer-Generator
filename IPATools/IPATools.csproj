@@ -109,7 +109,9 @@
     <Content Include="Resources\Button.png" />
     <Content Include="Resources\Icon.png" />
     <Content Include="Resources\Install.xml" />
-    <Content Include="Resources\Template.xml" />
+    <Content Include="Resources\Template.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

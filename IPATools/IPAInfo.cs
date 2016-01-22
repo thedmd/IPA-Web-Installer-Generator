@@ -11,6 +11,28 @@ namespace IPATools
         Universal
     }
 
+    public class IPAIcon
+    {
+        public Image Icon = null;
+        public int Scale = 1;
+        public DeviceFamily Familiy = DeviceFamily.Unknown;
+
+        public IPAIcon()
+        {
+        }
+
+        public IPAIcon(Image icon)
+        {
+            Icon = icon;
+        }
+
+        public IPAIcon(Image icon, int scale)
+        {
+            Icon = icon;
+            Scale = scale;
+        }
+    }
+
     public class IPAInfo
     {
         public DeviceFamily DeviceFamily = DeviceFamily.Unknown; // UIDeviceFamily
@@ -23,10 +45,11 @@ namespace IPATools
         public string PlatformName = string.Empty; // DTPlatformName
         public string PlatformVersion = string.Empty; // DTPlatformVersion
         public DateTime BuildDate = DateTime.MinValue;
-        public Image Icon57 = null;
-        public Image Icon72 = null;
-        public Image Icon256 = null;
-        public Image Icon512 = null;
-        public Image RawIcon = null;
+        public IPAIcon[] Icons = null;
+        public IPAIcon Icon57 = null;
+        public IPAIcon Icon72 = null;
+        public IPAIcon Icon256 = null;
+        public IPAIcon Icon512 = null;
+        public IPAIcon BestIcon = null;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -31,6 +30,8 @@ namespace IPA_Web_Installer_Generator
 
             if (!string.IsNullOrEmpty(Settings.Default.IPAPath) && File.Exists(Settings.Default.IPAPath))
                 LoadIPA(Settings.Default.IPAPath);
+
+            new IPAInstallerGenerator();
 
             //const string ipaPath = @"C:\Users\thedmd\Desktop\G5_Ship_GameiPad-resigned.ipa";
             //const string ipaPath = @"d:\Projects\Sandbox\IPA-Web-Installer-Generator\Resources\Enigmatis_TheGhostsOfMapleCreek_iOS_20120925_0324.ipa";
@@ -67,7 +68,7 @@ namespace IPA_Web_Installer_Generator
                 IPAVersion.Text = info.BundleVersion;
                 IPAMinOS.Text = info.MinimumOSVersion;
                 IPADate.Text = info.BuildDate.ToString();
-                IPAIcon.Image = info.Icon72;
+                IPAIcon.Image = info.Icon72.Icon;
 
                 Text = Title + " - " + info.BundleDisplayName;
 
@@ -138,7 +139,7 @@ namespace IPA_Web_Installer_Generator
                 IPABrowse.Enabled = enable;
                 BuildDir.Enabled = enable;
             }
-            
+
             ShowOutputButton.Enabled = enable;
             OpenInBrowserButton.Enabled = enable;
             GenerateButton.Enabled = enable;
@@ -283,7 +284,7 @@ namespace IPA_Web_Installer_Generator
             catch (Exception ex)
             {
                 MessageBoxEx.Show(this, ex.Message, Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }            
+            }
         }
 
         void GenerateButton_Click(object sender, EventArgs e)
@@ -295,7 +296,7 @@ namespace IPA_Web_Installer_Generator
             catch (Exception ex)
             {
                 MessageBoxEx.Show(this, ex.Message, Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }   
+            }
         }
     }
 }

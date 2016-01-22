@@ -76,8 +76,6 @@ namespace IPATools
             else if (deviceFamilies.ContainsKey(2))
                 info.DeviceFamily = DeviceFamily.iPad;
 
-            Image bestIcon = null;
-
             List<string> iconNames = new List<string>();
 
             object[] bundleIconFiles = null;
@@ -104,53 +102,55 @@ namespace IPATools
                 foreach (string bundleIconFile in bundleIconFiles as object[])
                     iconNames.Add(Path.Combine(bundleRoot, bundleIconFile));
 
+            List<IPAIcon> icons = new List<IPAIcon>();
             foreach (string iconName in iconNames)
             {
-                ZipEntry iconEntry = FindZipEntry(ipa, iconName);
-                if (iconEntry == null)
+                var iconEntries = FindZipEntries(ipa, iconName);
+                if (iconEntries == null || iconEntries.Count == 0)
                     continue;
 
-                Image icon = null;
-                using (MemoryStream buffer = new MemoryStream())
+                foreach (var iconEntry in iconEntries)
                 {
-                    using (Stream zipStream = ipa.GetInputStream(iconEntry))
-                    using (Stream pngStream = Decrunch.Process(zipStream))
-                        IPATools.Utilities.Utils.CopyStream(pngStream, buffer);
+                    Image iconImage = null;
+                    using (MemoryStream buffer = new MemoryStream())
+                    {
+                        using (Stream zipStream = ipa.GetInputStream(iconEntry))
+                        using (Stream pngStream = Decrunch.Process(zipStream))
+                            IPATools.Utilities.Utils.CopyStream(pngStream, buffer);
 
-                    buffer.Position = 0;
+                        buffer.Position = 0;
 
-                    icon = Image.FromStream(buffer);
+                        iconImage = Image.FromStream(buffer);
+                    }
+
+                    if (null == iconImage)
+                        continue;
+
+                    var suffix = Path.GetFileNameWithoutExtension(iconEntry.Name).Substring(Path.GetFileNameWithoutExtension(iconName).Length);
+
+                    IPAIcon icon = new IPAIcon(iconImage);
+                    Match match = Regex.Match(suffix, @"(@(?<scale>\d+)x)?((?<ipad>~ipad)|(?<iphone>~iphone))?");
+                    if (match.Success)
+                    {
+                        if (match.Groups["scale"].Success)
+                            icon.Scale = int.Parse(match.Groups["scale"].Value);
+                        if (match.Groups["ipad"].Success)
+                            icon.Familiy = DeviceFamily.iPad;
+                        if (match.Groups["iphone"].Success)
+                            icon.Familiy = DeviceFamily.iPhone;
+                    }
+
+                    icons.Add(icon);
                 }
-
-                if (null == icon)
-                    continue;
-
-                if (icon.Width == 57 && icon.Height == 57)
-                    info.Icon57 = icon;
-                if (icon.Width == 72 && icon.Height == 72)
-                    info.Icon72 = icon;
-                if (icon.Width == 256 && icon.Height == 256)
-                    info.Icon256 = icon;
-                if (icon.Width == 512 && icon.Height == 512)
-                    info.Icon512 = icon;
-
-                if (null == bestIcon || (icon.Width >= bestIcon.Width && icon.Height >= bestIcon.Height))
-                    bestIcon = icon;
             }
 
-            info.RawIcon = bestIcon;
+            info.Icons    = icons.ToArray();
+            info.BestIcon = GetBestIcon(icons, info.DeviceFamily);
 
-            if (bestIcon == null)
-                bestIcon = Resources.Icon;
-
-            if (null == info.Icon57)
-                info.Icon57 = ResizeImage(bestIcon, new Size(57, 57));
-            if (null == info.Icon72)
-                info.Icon72 = ResizeImage(bestIcon, new Size(72, 72));
-            if (null == info.Icon256)
-                info.Icon256 = ResizeImage(bestIcon, new Size(256, 256));
-            if (null == info.Icon512)
-                info.Icon512 = ResizeImage(bestIcon, new Size(512, 512));
+            info.Icon57 = GetIconOfSize(info, 57);
+            info.Icon72 = GetIconOfSize(info, 72);
+            info.Icon256 = GetIconOfSize(info, 256);
+            info.Icon512 = GetIconOfSize(info, 512);
 
             ZipEntry infoPlistStrings = FindZipEntry(ipa, Path.Combine(bundleRoot, "InfoPlist.strings"));
             if (null == infoPlistStrings)
@@ -216,6 +216,71 @@ namespace IPATools
             }
 
             return null;
+        }
+
+        static List<ZipEntry> FindZipEntries(ZipFile file, string name)
+        {
+            name = name.Replace('\\', '/');
+
+            string dir = Path.GetDirectoryName(name).Replace('\\', '/');
+            if (!string.IsNullOrEmpty(dir))
+                dir += '/';
+
+            List<ZipEntry> result = new List<ZipEntry>();
+            foreach (ZipEntry entry in file)
+            {
+                string entryName = entry.Name.Replace('\\', '/');
+
+                if (!entryName.StartsWith(name))
+                    continue;
+
+                var shortPath = entryName.Substring(dir.Length);
+
+                if (string.IsNullOrEmpty(Path.GetDirectoryName(shortPath)))
+                    result.Add(entry);
+            }
+
+            return result;
+        }
+
+        // Search for best icon or return default one.
+        static IPAIcon GetBestIcon(List<IPAIcon> icons, DeviceFamily deviceFamily)
+        {
+            IPAIcon bestIcon = null;
+            int bestIconScore = 0;
+            foreach (var icon in icons)
+            {
+                if (deviceFamily != DeviceFamily.Unknown && (deviceFamily != icon.Familiy))
+                    continue;
+
+                int iconScore = icon.Icon.Width * icon.Icon.Height * icon.Scale;
+
+                if (bestIcon == null || iconScore > bestIconScore)
+                {
+                    bestIcon = icon;
+                    bestIconScore = iconScore;
+                }
+            }
+
+            if (null != bestIcon)
+                return bestIcon;
+            else if (deviceFamily != DeviceFamily.Unknown)
+                return GetBestIcon(icons, DeviceFamily.Unknown);
+            else if (icons.Count > 0)
+                return icons[icons.Count - 1];
+            else
+                return new IPAIcon(Resources.Icon);
+        }
+
+        static IPAIcon GetIconOfSize(IPAInfo info, int size)
+        {
+            foreach (var icon in info.Icons)
+                if (icon.Icon.Width == size)
+                    return icon;
+
+            Image resizedIcon = ResizeImage(info.BestIcon.Icon, new Size(size, size));
+
+            return new IPAIcon(resizedIcon);
         }
 
         static string GetDictionaryEntry(IDictionary dict, string key)

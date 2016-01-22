@@ -189,10 +189,10 @@ namespace IPATools
                 dictionary["[[IPA-URL]]"] = GetAbsoluteUrl(ipaPath);
                 dictionary["[[PLIST-URL]]"] = GetAbsoluteUrl(infoPath);
 
-                info.Icon57.Save(Path.Combine(m_OutputDir, icon57Path));
-                info.Icon72.Save(Path.Combine(m_OutputDir, icon72Path));
-                info.Icon256.Save(Path.Combine(m_OutputDir, icon256Path));
-                info.Icon512.Save(Path.Combine(m_OutputDir, icon512Path));
+                info.Icon57.Icon.Save(Path.Combine(m_OutputDir, icon57Path));
+                info.Icon72.Icon.Save(Path.Combine(m_OutputDir, icon72Path));
+                info.Icon256.Icon.Save(Path.Combine(m_OutputDir, icon256Path));
+                info.Icon512.Icon.Save(Path.Combine(m_OutputDir, icon512Path));
 
                 string installRow = ReplaceTokens(rowTemplate, dictionary);
                 string infoContent = ReplaceTokens(Resources.Template, dictionary);
