@@ -114,13 +114,36 @@ namespace IPATools
                     Image iconImage = null;
                     using (MemoryStream buffer = new MemoryStream())
                     {
-                        using (Stream zipStream = ipa.GetInputStream(iconEntry))
-                        using (Stream pngStream = Decrunch.Process(zipStream))
-                            IPATools.Utilities.Utils.CopyStream(pngStream, buffer);
+                        try
+                        {
+                            using (Stream zipStream = ipa.GetInputStream(iconEntry))
+                            using (Stream pngStream = Decrunch.Process(zipStream))
+                                IPATools.Utilities.Utils.CopyStream(pngStream, buffer);
+                        }
+                        catch (Exception)
+                        {
+                            buffer.Position = 0;
+                            buffer.SetLength(0);
+                        }
+
+                        if (buffer.Position == 0)
+                        {
+                            try
+                            {
+                                using (Stream zipStream = ipa.GetInputStream(iconEntry))
+                                    IPATools.Utilities.Utils.CopyStream(zipStream, buffer);
+                            }
+                            catch (Exception)
+                            {
+                                buffer.Position = 0;
+                                buffer.SetLength(0);
+                            }
+                        }
 
                         buffer.Position = 0;
 
-                        iconImage = Image.FromStream(buffer);
+                        if (buffer.Length > 0)
+                            iconImage = Image.FromStream(buffer);
                     }
 
                     if (null == iconImage)
