@@ -8,7 +8,8 @@ namespace IPATools
         Unknown,
         iPad,
         iPhone,
-        Universal
+        Universal,
+        AppleTV
     }
 
     public class IPAIcon

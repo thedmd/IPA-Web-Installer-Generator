@@ -25,10 +25,10 @@ namespace IPATools
             string bundleRoot = string.Empty;
             foreach (ZipEntry entry in ipa)
             {
-                if (entry.IsFile)
+                if (entry.IsDirectory)
                 {
-                    string[] components = entry.Name.Split(new char[] { '\\', '/' });
-                    if (components.Length > 1)
+                    string[] components = entry.Name.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (components.Length > 1 && components[0] == "Payload" && components[1].EndsWith(".app"))
                     {
                         bundleRoot = Path.Combine(components[0], components[1]);
                         break;
@@ -75,6 +75,8 @@ namespace IPATools
                 info.DeviceFamily = DeviceFamily.iPhone;
             else if (deviceFamilies.ContainsKey(2))
                 info.DeviceFamily = DeviceFamily.iPad;
+            else if (deviceFamilies.ContainsKey(3))
+                info.DeviceFamily = DeviceFamily.AppleTV;
 
             List<string> iconNames = new List<string>();
 
