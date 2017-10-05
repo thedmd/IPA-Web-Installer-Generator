@@ -1,0 +1,30 @@
+
+# /
+/*.suo
+/*.ncb
+/*.sdf
+/*.opensdf
+/ipch
+/*.user
+/_ReSharper.*
+/[Bb]in
+/obj
+/[Dd]ebug
+/[Rr]elease
+/*.aps
+/*.eto
+/.vs
+
+# /IPA-Web-Installer-Generator/
+/IPA-Web-Installer-Generator/bin
+/IPA-Web-Installer-Generator/obj
+
+# /IPAInstallerGenerator/
+/IPAInstallerGenerator/*.user
+/IPAInstallerGenerator/bin
+/IPAInstallerGenerator/obj
+
+# /IPATools/
+/IPATools/*.user
+/IPATools/bin
+/IPATools/obj
