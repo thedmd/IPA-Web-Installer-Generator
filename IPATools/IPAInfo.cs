@@ -52,5 +52,6 @@ namespace IPATools
         public IPAIcon Icon256 = null;
         public IPAIcon Icon512 = null;
         public IPAIcon BestIcon = null;
+        public string[] ProvisionedDevices = null;
     }
 }

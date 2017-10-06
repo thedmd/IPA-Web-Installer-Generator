@@ -358,6 +358,7 @@
                                         <div class="install_text">Install</div>
                                     </div>
                                 </a>
+                              <a href="[[DEVICECONFIG-URL]]" style="text-decoration: none[[DEVICECONFIG-VISIBILITY]]">Check profile</a>
                             </td>
                         </tr>
                     <!-- ROW END -->
@@ -377,8 +378,6 @@
             <p>
                 <center>
                     <span class="stamp">
-                        Tap here to install <a href="http://ftp.artifexmundi.com/Departments/Deployment/Certificate/ArtifexMundiCA.crt">https server certificate</a>.<br />
-                        Renew <a href="https://developer.apple.com/ios/manage/provisioningprofiles/index.action">profisioning profile here</a>.
                     </span>
                 </center>
             </p>
