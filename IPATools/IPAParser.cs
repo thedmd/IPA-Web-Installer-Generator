@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Runtime.Serialization.Plists;
 using ICSharpCode.SharpZipLib.Zip;
 using IPATools.Properties;
 using IPATools.Utilities;
@@ -51,8 +50,7 @@ namespace IPATools
 
                 memoryStream.Position = 0;
 
-                BinaryPlistReader reader = new BinaryPlistReader();
-                bundleInfo = reader.ReadObject(memoryStream);
+                bundleInfo = ReadPlist(memoryStream);
             }
 
             info.BundleDisplayName = GetDictionaryEntry(bundleInfo, "CFBundleDisplayName");
@@ -66,7 +64,7 @@ namespace IPATools
 
             Dictionary<int, bool> deviceFamilies = new Dictionary<int, bool>();
             if (bundleInfo.Contains("UIDeviceFamily"))
-                foreach (short deviceFamily in bundleInfo["UIDeviceFamily"] as object[])
+                foreach (int deviceFamily in bundleInfo["UIDeviceFamily"] as List<object>)
                     deviceFamilies.Add(deviceFamily, true);
 
             if (deviceFamilies.ContainsKey(1) && deviceFamilies.ContainsKey(2))
@@ -80,7 +78,7 @@ namespace IPATools
 
             List<string> iconNames = new List<string>();
 
-            object[] bundleIconFiles = null;
+            List<object> bundleIconFiles = null;
 
             // Find device specific icon bundle
             IDictionary bundleIcons = null;
@@ -94,14 +92,14 @@ namespace IPATools
             {
                 IDictionary primaryIcon = bundleIcons["CFBundlePrimaryIcon"] as IDictionary;
                 if (null != primaryIcon)
-                    bundleIconFiles = primaryIcon["CFBundleIconFiles"] as object[];
+                    bundleIconFiles = primaryIcon["CFBundleIconFiles"] as List<object>;
             }
 
             if (null == bundleIconFiles)
-                bundleIconFiles = bundleInfo["CFBundleIconFiles"] as object[];
+                bundleIconFiles = bundleInfo["CFBundleIconFiles"] as List<object>;
 
             if (null != bundleIconFiles)
-                foreach (string bundleIconFile in bundleIconFiles as object[])
+                foreach (string bundleIconFile in bundleIconFiles as List<object>)
                     iconNames.Add(Path.Combine(bundleRoot, bundleIconFile));
 
             List<IPAIcon> icons = new List<IPAIcon>();
@@ -209,8 +207,7 @@ namespace IPATools
                     }
                     catch (Exception)
                     {
-                        BinaryPlistReader reader = new BinaryPlistReader();
-                        strings = reader.ReadObject(memoryStream);
+                        strings = ReadPlist(memoryStream);
                     }
                 }
 
@@ -284,6 +281,11 @@ namespace IPATools
 
 
             return info;
+        }
+
+        static Dictionary<string, object> ReadPlist(Stream stream)
+        {
+            return (Dictionary<string, object>)PlistCS.Plist.readPlist(stream, PlistCS.plistType.Auto);
         }
 
         static ZipEntry FindZipEntry(ZipFile file, string name)

@@ -23,6 +23,7 @@
     <DefineConstants>TRACE;DEBUG;WIN32</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,17 +46,7 @@
     <Compile Include="IPAInfo.cs" />
     <Compile Include="IPAInstallerGenerator.cs" />
     <Compile Include="IPAParser.cs" />
-    <Compile Include="PLists\BinaryPlistArray.cs" />
-    <Compile Include="PLists\BinaryPlistDictionary.cs" />
-    <Compile Include="PLists\BinaryPlistItem.cs" />
-    <Compile Include="PLists\BinaryPlistReader.cs" />
-    <Compile Include="PLists\BinaryPlistWriter.cs" />
-    <Compile Include="PLists\DataContractBinaryPlistSerializer.cs" />
-    <Compile Include="PLists\EndianConverter.cs" />
-    <Compile Include="PLists\Extensions.cs" />
-    <Compile Include="PLists\IPlistSerializable.cs" />
-    <Compile Include="PLists\TypeCacheItem.cs" />
-    <Compile Include="PLists\UniqueValueCache.cs" />
+    <Compile Include="PLists\Plist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -106,6 +98,7 @@
     <Compile Include="Zip\Zip\ZipOutputStream.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PLists\README.txt" />
     <Content Include="Resources\Button.png" />
     <None Include="Resources\htaccess.xml" />
     <Content Include="Resources\Icon.png" />
