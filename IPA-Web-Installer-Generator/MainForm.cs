@@ -162,7 +162,7 @@ namespace IPA_Web_Installer_Generator
             GenerateProgressBar.Maximum = 100;
             GenerateProgressBar.Visible = true;
 
-            IPAInstallerGenerator generator = new IPAInstallerGenerator(info, outputDir, GetHostUrl(),
+            IPAInstallerGenerator generator = new IPAInstallerGenerator(info, outputDir, GetHostUrl(), null,
                 new IPAInstallerGenerator.CustomFileCopyHandler(Worker_Runner));
             generator.Run();
         }

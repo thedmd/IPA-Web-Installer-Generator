@@ -219,6 +219,70 @@ namespace IPATools
                     info.BundleDisplayName = displayName;
             }
 
+            // Find embedded provisioning profile
+            ZipEntry mobileprovisionEntry = FindZipEntry(ipa, Path.Combine(bundleRoot, "embedded.mobileprovision"));
+            if (null == mobileprovisionEntry)
+                throw new Exception("Failed to find embedded.mobileprovision in IPA archive.");
+
+            List<string> devices = new List<string>();
+            using (MemoryStream memoryStream = new MemoryStream(64000))
+            {
+                using (Stream data = ipa.GetInputStream(mobileprovisionEntry))
+                    IPATools.Utilities.Utils.CopyStream(data, memoryStream);
+
+                memoryStream.Position = 0;
+
+                const string keyProvisionedDevices = "<key>ProvisionedDevices</key>";
+                //const string keyProvisionedDevices = "PUBLIC";
+                const string keyStringStart = "<string>";
+                const string keyStringEnd = "</string>";
+                const string keyArrayEnd = "</array>";
+
+                // Search for Provisioned Devices array
+                UTF8Encoding encoder = new UTF8Encoding(false, false);
+                string entry = encoder.GetString(memoryStream.GetBuffer());
+                int dupa = entry.Length;
+                int positionProvDevs = entry.IndexOf(keyProvisionedDevices);
+                if (positionProvDevs > 0)
+                {
+                    // Got array. Iterate <string></string> elements until end of the array
+                    int positionCurrent = positionProvDevs;
+                    int positionEndOfStrings = entry.IndexOf(keyArrayEnd, positionProvDevs);
+
+                    while (true)
+                    {
+                        // Search for next <string>
+                        int positionNextString = entry.IndexOf(keyStringStart, positionCurrent);
+
+                        // If not found at all or located behind the array - stop loop
+                        if ((positionNextString < 0) || (positionNextString > positionEndOfStrings))
+                            break;
+
+                        //Extract provisioned device id
+                        int positionEndString = entry.IndexOf(keyStringEnd, positionNextString);
+                        if (positionEndString < 0)
+                            throw new Exception("Failed to parse embedded.mobileprovision. Syntax error?");
+
+
+
+                        string uuid = entry.Substring(positionNextString + keyStringStart.Length, positionEndString - positionNextString - keyStringStart.Length);
+
+                        // Add extracted uuid to list
+                        devices.Add(uuid);
+
+                        // Increase current position
+                        positionCurrent = positionEndString;
+                    }
+
+                }
+                else
+                    throw new Exception("Embeded provisioning profile doesn't allow to install IPA on developer device. Please, resign the IPA with OTA provisioning profile!");
+
+            }
+
+            info.ProvisionedDevices = devices.ToArray();
+
+
             return info;
         }
 

@@ -107,8 +107,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Button.png" />
+    <None Include="Resources\htaccess.xml" />
     <Content Include="Resources\Icon.png" />
+    <None Include="Resources\imagefail.png" />
+    <None Include="Resources\imageok.png" />
     <Content Include="Resources\Install.xml" />
+    <None Include="Resources\mobileconfig.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Resources\ProvisioningCheck.xml" />
     <Content Include="Resources\Template.xml">
       <SubType>Designer</SubType>
     </Content>

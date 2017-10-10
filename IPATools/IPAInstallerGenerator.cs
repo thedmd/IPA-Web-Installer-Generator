@@ -25,6 +25,17 @@ namespace IPATools
             set { m_BaseUrl = value; }
         }
 
+        public string UUIDServiceUrl
+        {
+            get { return m_UUIDServiceUrl; }
+            set { m_UUIDServiceUrl = value; }
+        }
+
+        private bool IsUUIDServiceEnabled()
+        {
+            return !string.IsNullOrEmpty(UUIDServiceUrl);
+        }
+
         public CustomFileCopyHandler CustomFileCopy
         {
             get { return m_CustomFileCopy; }
@@ -44,18 +55,19 @@ namespace IPATools
             SkipCopying = false;
         }
 
-        public IPAInstallerGenerator(IPAInfo info, string outputDir, string baseUrl, CustomFileCopyHandler fileCopyHandler):
-            this(new IPAInfo[] { info }, outputDir, baseUrl, fileCopyHandler)
+        public IPAInstallerGenerator(IPAInfo info, string outputDir, string baseUrl, string uuidServiceUrl, CustomFileCopyHandler fileCopyHandler):
+            this(new IPAInfo[] { info }, outputDir, baseUrl, uuidServiceUrl, fileCopyHandler)
         {
         }
 
-        public IPAInstallerGenerator(IPAInfo[] infos, string outputDir, string baseUrl, CustomFileCopyHandler fileCopyHandler):
+        public IPAInstallerGenerator(IPAInfo[] infos, string outputDir, string baseUrl, string uuidServiceUrl, CustomFileCopyHandler fileCopyHandler) :
             this()
         {
             InfoList.Clear();
             InfoList.AddRange(infos);
             OutputDir = outputDir;
             BaseUrl = baseUrl;
+            UUIDServiceUrl = uuidServiceUrl;
             CustomFileCopy = fileCopyHandler;
         }
 
@@ -146,6 +158,19 @@ namespace IPATools
 
             Resources.Button.Save(Path.Combine(m_OutputDir, buttonPath));
 
+            string imageokPath = Path.Combine(commonDirName, "imageok.png");
+            string imagefailPath = Path.Combine(commonDirName, "imagefail.png");
+            if (IsUUIDServiceEnabled())
+            {             
+                Resources.imageok.Save(Path.Combine(m_OutputDir, imageokPath));
+                Resources.imagefail.Save(Path.Combine(m_OutputDir, imagefailPath));
+
+                // Where should I place the htacccess file?
+                //string htaaccessPath = Path.Combine(commonDirName, ".htaccess");
+                string htaaccessPath = ".htaccess";
+                File.WriteAllText(Path.Combine(m_OutputDir, htaaccessPath), Resources.htaccess);
+            }
+            
             Dictionary<string, string> commonDictionary = new Dictionary<string, string>();
             commonDictionary.Add("[[BUTTON-URL]]", GetAbsoluteUrl(buttonPath));
             commonDictionary.Add("[[BUNDLE-DISPLAY-NAME]]", "Ad-Hoc Installers");
@@ -176,6 +201,13 @@ namespace IPATools
                 string icon512Path = Path.Combine(contentDirName, "Icon-512.png");
                 string ipaPath = Path.Combine(contentDirName, ipaFileName);
                 string infoPath = Path.Combine(contentDirName, infoFileName);
+                string mobileconfigPath = Path.Combine(contentDirName, "device.mobileconfig");
+                string provicheckPath = Path.Combine(contentDirName, "provisioningcheck.html");
+                
+                info.Icon57.Icon.Save(Path.Combine(m_OutputDir, icon57Path));
+                info.Icon72.Icon.Save(Path.Combine(m_OutputDir, icon72Path));
+                info.Icon256.Icon.Save(Path.Combine(m_OutputDir, icon256Path));
+                info.Icon512.Icon.Save(Path.Combine(m_OutputDir, icon512Path));
 
                 dictionary["[[BUNDLE-DISPLAY-NAME]]"] = info.BundleDisplayName;
                 dictionary["[[BUNDLE-ID]]"] = info.BundleIdentifier;
@@ -188,11 +220,50 @@ namespace IPATools
                 dictionary["[[ICON-XLARGE-URL]]"] = GetAbsoluteUrl(icon512Path);
                 dictionary["[[IPA-URL]]"] = GetAbsoluteUrl(ipaPath);
                 dictionary["[[PLIST-URL]]"] = GetAbsoluteUrl(infoPath);
+                dictionary["[[DEVICECONFIG-URL]]"] = GetAbsoluteUrl(mobileconfigPath);
+                dictionary["[[DEVICECONFIG-VISIBILITY]]"] = "; visibility: hidden;";
 
-                info.Icon57.Icon.Save(Path.Combine(m_OutputDir, icon57Path));
-                info.Icon72.Icon.Save(Path.Combine(m_OutputDir, icon72Path));
-                info.Icon256.Icon.Save(Path.Combine(m_OutputDir, icon256Path));
-                info.Icon512.Icon.Save(Path.Combine(m_OutputDir, icon512Path));
+                if (IsUUIDServiceEnabled())
+                {
+
+                    // Warning: This tool require server side code!
+                    // ============================================
+                    // Take a look on mobileconfig.xml template (in Resources). You need to provide URL to web service, which could parse
+                    // response from device (extract UUID) and redirect user to website, which address is in url argument.
+                    // http://yourservice_getuuid.company.com/receiver.php?url=<url_generated_by_installer>
+                    // Service should redicert user to <url_generated_by_installer>?uid=<uuid_extracted_from_resopnse>
+                    //
+                    // References: 
+                    // http://www.joshwright.com/tips/getting-an-iphone-udid-from-mobile-safari
+                    // https://github.com/hunk/get-udid
+
+                    // Make the "Check profile" link visible
+                    dictionary["[[DEVICECONFIG-VISIBILITY]]"] = "";
+
+                    Dictionary<string, string> provisionedDictionary = new Dictionary<string, string>();
+                    provisionedDictionary.Add("[[TITLE-NAME]]", "Ad-Hoc Installers");
+                    provisionedDictionary["[[BUNDLE-DISPLAY-NAME]]"] = info.BundleDisplayName;
+                    provisionedDictionary["[[BUNDLE-ID]]"] = info.BundleIdentifier;
+                    provisionedDictionary["[[BUNDLE-VERSION]]"] = info.BundleVersion;
+                    provisionedDictionary["[[BUILD-PLATFORM]]"] = info.DeviceFamily.ToString();
+                    provisionedDictionary["[[BUILD-DATE]]"] = info.BuildDate.ToString();
+                    provisionedDictionary["[[ICON-LARGE-URL]]"] = GetAbsoluteUrl(icon256Path);
+                    provisionedDictionary["[[IMAGE-OK-URL]]"] = GetAbsoluteUrl(imageokPath);
+                    provisionedDictionary["[[IMAGE-FAIL-URL]]"] = GetAbsoluteUrl(imagefailPath);
+                    provisionedDictionary["[[PLIST-URL]]"] = GetAbsoluteUrl(infoPath);
+                    provisionedDictionary["[[UUID-ARRAY]]"] = GetJavaScriptArrayofUUIDs(info);
+                    provisionedDictionary["[[BUTTON-URL]]"] = GetAbsoluteUrl(buttonPath);
+
+                    string provicheckContent = ReplaceTokens(Resources.ProvisioningCheck, provisionedDictionary);
+                    File.WriteAllText(Path.Combine(m_OutputDir, provicheckPath), provicheckContent);
+
+                    Dictionary<string, string> mobileConfigDictionary = new Dictionary<string, string>();
+                    mobileConfigDictionary.Add("[[PROVISIONCHECK-URL]]", GetAbsoluteUrl(provicheckPath));
+                    mobileConfigDictionary.Add("[[PROVISIONCHECK-SERVER]]", UUIDServiceUrl);
+                    string mobileconfigContent = ReplaceTokens(Resources.mobileconfig, mobileConfigDictionary);
+                    File.WriteAllText(Path.Combine(m_OutputDir, mobileconfigPath), mobileconfigContent);
+
+                }
 
                 string installRow = ReplaceTokens(rowTemplate, dictionary);
                 string infoContent = ReplaceTokens(Resources.Template, dictionary);
@@ -210,10 +281,28 @@ namespace IPATools
             File.WriteAllText(Path.Combine(m_OutputDir, installPath), installer.ToString());
 
             // IPA Keys:
-            // [[IPA-URL]] [[ICON-URL]] [[ICON-LARGE-URL]] [[BUNDLE-ID]] [[BUNDLE-VERSION]] [[BUNDLE-DISPLAY-NAME]] [[BUILD-PLATFORM]] [[BUILD-DATE]]
+            // [[IPA-URL]] [[ICON-URL]] [[ICON-LARGE-URL]] [[BUNDLE-ID]] [[BUNDLE-VERSION]] [[BUNDLE-DISPLAY-NAME]] [[BUILD-PLATFORM]] [[BUILD-DATE]] [[DEVICECONFIG-URL]]
 
             // Install Keys:
             // [[BUNDLE-DISPLAY-NAME]] [[ICON-LARGE-URL]] [[PLIST-URL]] [[BUTTON-URL]]
+        }
+
+        private string GetJavaScriptArrayofUUIDs(IPAInfo info)
+        {
+            StringBuilder builder = new StringBuilder("[");
+            int counter = 0;
+            foreach (var uuid in info.ProvisionedDevices)
+            {
+                if (counter != 0)
+                    builder.AppendLine(",");
+                counter++;
+                builder.Append("\"");
+                builder.Append(uuid);
+                builder.Append("\"");
+            }     
+       
+            builder.Append("]");
+            return builder.ToString();
         }
 
         private string GetAbsoluteUrl(string path)
@@ -234,6 +323,7 @@ namespace IPATools
         private List<IPAInfo> m_InfoList = new List<IPAInfo>();
         private string m_OutputDir = string.Empty;
         private string m_BaseUrl = string.Empty;
+        private string m_UUIDServiceUrl = string.Empty;
         private bool m_Running = false;
         private CustomFileCopyHandler m_CustomFileCopy = null;
     }

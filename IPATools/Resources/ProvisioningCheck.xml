@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Provisioning profile checker</title>
+        <style type="text/css">
+            .icon
+            {
+                white-space:    nowrap;
+                text-align:     center;
+                vertical-align: middle;
+                width: 174px;
+            }
+
+            .title
+            {
+                color: #FFFFFF;
+                font-size: 24pt;
+                font-weight: bold;
+                font-family: calibri,verdana,geneva,sans-serif;
+                text-shadow: 2px 2px 3px #000000;
+            }
+
+            td.title
+            {
+                border-bottom: 1px solid #C0C0C0;
+                padding: 4pt;
+            }
+
+            td.info
+            {
+                padding: 4pt;
+                padding-top: 10pt;
+            }
+
+            td.stamp_header
+            {
+                text-align: left;
+                vertical-align: top;
+            }
+
+            td.stamp_body
+            {
+                text-align: left;
+                vertical-align: top;
+                width: auto;
+                padding-left: 7px;
+            }
+
+            td.stamp_fill
+            {
+            }
+
+            td.separator
+            {
+                padding-top: 10px;
+            }
+
+            div.stamp
+            {
+            }
+
+            .stamp
+            {
+                color: #909090;
+                font-size: 18px;
+                font-family: verdana,geneva,sans-serif;
+            }
+            
+            .stampsmall
+            {
+                color: #808080;
+                font-size: 12px;
+                font-family: verdana,geneva,sans-serif;
+            }
+
+            .stamp_value
+            {
+                color: #96AEB7;
+                font-size: 18px;
+                font-family: verdana,geneva,sans-serif;
+            }
+
+            .image_ok
+            {
+                padding-left: 32px;
+                padding-right: 32px;
+                width: 128px;
+                height: 128px;
+                background: transparent url('[[IMAGE-OK-URL]]') center center no-repeat;
+                background-size:128px 128px;
+                text-decoration: none;
+            }
+                        
+            .image_fail
+            {
+                padding-left: 32px;
+                padding-right: 32px;
+                width: 128px;
+                height: 128px;
+                background: transparent url('[[IMAGE-FAIL-URL]]') center center no-repeat;
+                background-size:128px 128px;
+                text-decoration: none;
+            }
+            
+            .install_button
+            {
+                padding-left: 32px;
+                padding-right: 32px;
+                width: 240px;
+                height: 58px;
+                background: transparent url('[[BUTTON-URL]]') center center no-repeat;
+                background-size:240px 58px;
+                text-decoration: none;
+            }
+
+            .install_text
+            {
+                padding-top: 10px;
+
+                vertical-align: middle;
+                text-align: center;
+
+                text-decoration: none;
+                text-shadow: 3px 3px 10px #1F3118;
+                text-transform:uppercase;
+
+                font-family: verdana,geneva,sans-serif;
+                font-weight: bold;
+                font-size: 28px;
+                color: white;
+            }
+                      
+            .uuid_text
+            {
+                padding-top: 10px;
+
+                vertical-align: middle;
+                text-align: center;
+
+                text-decoration: none;
+                text-shadow: 3px 3px 10px #1F3118;
+                text-transform:uppercase;
+
+                font-family: verdana,geneva,sans-serif;
+                font-weight: bold;
+                font-size: 28px;
+                color: white;
+            }
+
+            .sort_button, .active_sort_button
+            {
+                margin           : 0;
+                border           : 0;
+                font-family      : inherit;
+                font-size        : 1em;
+                cursor           : pointer;
+                border           : 1px solid #007099;
+                border-radius    : 3px;
+                display          : inline;
+                padding          : 2px 8px;
+                line-height      : 24px;
+                color            : #E0E0E0;
+                text-shadow      : 0 0 2px black;
+                font-family      : verdana,geneva,sans-serif;
+                background       : #005878;
+                background-image :    -moz-linear-gradient(#00749F,#004B67);
+                background-image :     -ms-linear-gradient(#00749F,#004B67);
+                background-image :      -o-linear-gradient(#00749F,#004B67);
+                background-image : -webkit-linear-gradient(#00749F,#004B67);
+                background-image :         linear-gradient(#00749F,#004B67);
+            }
+
+            .active_sort_button
+            {
+                color            : white;
+                background       : #005878;
+                background-image :    -moz-linear-gradient(#55ACCB,#2C5969);
+                background-image :     -ms-linear-gradient(#55ACCB,#2C5969);
+                background-image :      -o-linear-gradient(#55ACCB,#2C5969);
+                background-image : -webkit-linear-gradient(#55ACCB,#2C5969);
+                background-image :         linear-gradient(#55ACCB,#2C5969);
+            }
+
+            .hidden
+            {
+                display: none;
+            }
+
+            a:link {color:#C0C0C0;}
+            a:visited {color:#657D94;}
+            a:hover {color:#FFFFFF;}
+            a:active {color:#47ABCF;}
+        </style>
+
+    </head>
+    <body style="background-color: #003447;">
+        <div style="text-align: center; vertical-align: top;">
+            <div>
+                <table align="center" border="0" cellpadding="0" cellspacing="0">
+                  <thead id="uuidHeader">
+                    <tr>
+                      <td colspan="3">
+                        <div id="sortButtons" style="text-align: right; padding-top: 10px; padding-bottom: 15px;">
+                          <span id="uuidLabel" class="uuid_text">  
+                            JavaScript error.
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </thead>
+                    <tbody id="container">
+                        <!-- ROW START -->
+                        <tr>
+                            <td rowspan="2" class="icon">
+                                <img alt="" src="[[ICON-LARGE-URL]]" style="width: 144px; height: 144px;" />
+                            </td>
+                            <td colspan="2" class="title" style="text-align: left; vertical-align: top;">
+                                <div>
+                                    <span class="title">[[BUNDLE-DISPLAY-NAME]]</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="info">
+                                <table align="left" border="0" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Bundle id:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUNDLE-ID]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Version:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUNDLE-VERSION]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Platform:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUILD-PLATFORM]]</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stamp_header">
+                                                <span class="stamp">Build date:</span>
+                                            </td>
+                                            <td class="stamp_body">
+                                                <span class="stamp_value">[[BUILD-DATE]]</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td rowspan="1" >
+                                <a href="itms-services://?action=download-manifest&url=[[PLIST-URL]]" style="text-decoration: none">
+                                    <div id="image_ok" class="image_ok">
+                                    </div>
+                                    <div id="image_fail" class="image_fail">
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    <!-- ROW END -->
+                    <!-- ROW SEPARATOR START -->
+                        <tr>
+                            <td colspan="3" class="separator">
+                                <br />
+                            </td>
+                        </tr>
+                    <!-- ROW SEPARATOR END -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <p></p>
+            <p>
+                <center>
+                  <span class="stamp" id="resultdescription">
+      
+                  </span>
+                  <br />
+                  <a href="itms-services://?action=download-manifest&url=[[PLIST-URL]]" style="text-decoration: none">
+                    <div class="install_button">
+                      <div class="install_text">Install</div>
+                    </div>
+                  </a>
+                  <br />
+                  <br />
+                    <span class="stampsmall">
+                      This tool (2017.10.07) checks if your device is on the list of app's provisioned devices. <br />
+                      Please note: This app could not install for other reasons, ie. too old iOS installed.<br />         
+                    </span>
+
+
+                </center>
+            </p>
+        </div>
+
+        <script type="text/javascript">
+          var url = window.location.href;
+          var myuuid = /uid=([^&]+)/.exec(url)[1];
+          var provisionedDevices = [[UUID-ARRAY]];
+          var isProvisioned = (provisionedDevices.indexOf(myuuid) > -1);
+
+          document.getElementById("uuidLabel").innerHTML = 'UUID=' + myuuid;
+
+          var imageToRemove = "image_ok";
+          if (isProvisioned)
+          {
+            imageToRemove = "image_fail";
+            document.getElementById("resultdescription").innerHTML = 'You can install the application on this device';
+          }
+          else
+          {
+            document.getElementById("resultdescription").innerHTML =  'You cannot install this application on your device. Please contant your team agent to add your device to provisioning profile.';
+          }
+
+          var elem = document.getElementById(imageToRemove);
+          elem.parentNode.removeChild(elem);
+        </script>
+    </body>
+</html>
+

@@ -16,6 +16,7 @@ namespace IPAInstallerGenerator
             List<string> ipaList = new List<string>();
             string outputDir = string.Empty;
             string baseUrl = string.Empty;
+            string uuidServiceUrl = string.Empty;
             bool infoOnly = false;
             bool skipCopy = false;
 
@@ -47,6 +48,7 @@ namespace IPAInstallerGenerator
                             case "ipa": break;
                             case "outputDir": outputDir = args[++i]; break;
                             case "baseUrl": baseUrl = args[++i]; break;
+                            case "uuidServiceUrl": uuidServiceUrl = args[++i]; break;
                             case "info": infoOnly = true; break;
                             case "skipCopy": skipCopy = true; break;
                             default:
@@ -104,7 +106,7 @@ namespace IPAInstallerGenerator
 
                 Console.Write("Generating installer...");
                 IPATools.IPAInstallerGenerator generator = new IPATools.IPAInstallerGenerator(
-                    infoList.ToArray(), outputDir, baseUrl, null);
+                    infoList.ToArray(), outputDir, baseUrl, uuidServiceUrl, null);
                 generator.SkipCopying = skipCopy;
                 generator.Run();
                 Console.WriteLine(" Done!");
